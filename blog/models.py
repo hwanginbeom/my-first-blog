@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 
-class Post(models.Model):# 모델을 정의하는 코드 
+class Post(models.Model):# 모델을 정의하는 코드
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
