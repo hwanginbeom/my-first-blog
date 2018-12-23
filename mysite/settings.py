@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,55 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+
+
+## 소셜 관련 환경설정
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+)
+#Social Login은 기존 유저모델과 함께 사용이 가능합니다.
+# 하지만 기본 유저 ModelBackend를 사용하지 않고 독자적인 ModelBackend를 사용하기 때문에
+# settings.py의 AUTHENTICATION_BACKENDS에 Social login용 Backends를 추가해줘야 합니다.
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.google.GoogleOAuth2',
+    # 'social.backends.twitter.TwitterOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+# Facebook
+#SOCIAL_AUTH_FACEBOOK_KEY = '페북에서 받아온 키를 넣으세요'
+#SOCIAL_AUTH_FACEBOOK_SECRET = '페북에서 받아온 시크릿키를 넣으세요'
+
+## 키 값
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'AIzaSyASKncoKA2GKljZzF9bB6s5o0xvXl8gSGE'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+
+# Twitter
+# SOCIAL_AUTH_TWITTER_KEY = ''
+# SOCIAL_AUTH_TWITTER_SECRET = ''
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+# FACEBOOK_EXTENDED_PERMISSIONS = ['email', 'picture']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email, age_range'
+}
+
 
 TEMPLATES = [
     {
