@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import json
+
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -52,8 +55,45 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mysite.urls'
 
+## 환경변수로 키값을 설정하는 경우 -------------------------------------------------------
 
-## 소셜 관련 환경설정
+def get_env(setting, envs):
+    try:
+        return envs[setting]
+    except KeyError:
+        error_msg = "You SHOULD set {} environ".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+DEV_ENVS = os.path.join(BASE_DIR, "envs_dev.json")
+DEPLOY_ENVS = os.path.join(BASE_DIR, "envs.json")
+
+if os.path.exists(DEV_ENVS): # Develop Env
+    env_file = open(DEV_ENVS)
+elif os.path.exists(DEPLOY_ENVS): # Deploy Env
+    env_file = open(DEPLOY_ENVS)
+else:
+    env_file = None
+
+if env_file is None: # System environ
+    try:
+        # FACEBOOK_KEY = os.environ['FACEBOOK_KEY']
+        # FACEBOOK_SECRET = os.environ['FACEBOOK_SECRET']
+        GOOGLE_KEY = os.environ['GOOGLE_KEY']
+        GOOGLE_SECRET = os.environ['GOOGLE_SECRET']
+    except KeyError as error_msg:
+        raise ImproperlyConfigured(error_msg)
+else: # JSON env
+    envs = json.loads(env_file.read())
+    # FACEBOOK_KEY = get_env('FACEBOOK_KEY', envs)
+    # FACEBOOK_SECRET = get_env('FACEBOOK_SECRET', envs)
+    GOOGLE_KEY = get_env('GOOGLE_KEY', envs)
+    GOOGLE_SECRET = get_env('GOOGLE_SECRET', envs)
+
+
+
+
+
+## 소셜 관련 환경설정-------------------------------------------------------------------------
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
@@ -84,22 +124,21 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 #SOCIAL_AUTH_FACEBOOK_KEY = '페북에서 받아온 키를 넣으세요'
 #SOCIAL_AUTH_FACEBOOK_SECRET = '페북에서 받아온 시크릿키를 넣으세요'
 
-## 키 값
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'AIzaSyASKncoKA2GKljZzF9bB6s5o0xvXl8gSGE'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+## 키 값으로 하는 방식
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '241112517705-kgamsialdgvepvn2ag0ffigu3c2ouhbp.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'jn6y6fbshke-fNQjXzQeZ4UD'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
 
 # Twitter
 # SOCIAL_AUTH_TWITTER_KEY = ''
 # SOCIAL_AUTH_TWITTER_SECRET = ''
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 # FACEBOOK_EXTENDED_PERMISSIONS = ['email', 'picture']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, name, email, age_range'
-}
-
+# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+#    'fields': 'id, name, email, age_range'
+# }
 
 TEMPLATES = [
     {

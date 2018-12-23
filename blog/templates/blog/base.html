@@ -1,5 +1,5 @@
 {% load static %}
-<html>
+<html xmlns:social="http://www.w3.org/1999/xhtml">
     <head>
         <title>Django Girls blog</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -14,6 +14,8 @@
           {% endif %}
                       <h1><a href="/">Django Girls Blog</a></h1>
         </div>
+        <a href="{% url "social:begin" "google-oauth2" %}"><button class="btn btn-danger" style="width: 40%">G+ Login</button></a>
+        <a href="{% url "social:begin" "facebook" %}"><button class="btn btn-primary" style="width: 40%">FB Login</button></a>
         <div class="content container">
             <div class="row">
                 <div class="col-md-8">
