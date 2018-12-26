@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('blog.urls')),
     url('^', include('django.contrib.auth.urls')),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 
 ]

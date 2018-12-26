@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'social_django',
+    'oauth2_provider',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
@@ -51,8 +54,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
+MIDDLEWARE_CLASSES = (
+    # ...
+    'corsheaders.middleware.CorsMiddleware',
+    # ...
+)
 ROOT_URLCONF = 'mysite.urls'
 
 ## 환경변수로 키값을 설정하는 경우 -------------------------------------------------------
