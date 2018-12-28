@@ -14,18 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
+from django.conf import settings
 from django.contrib import admin
 
-
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
-
-LOGIN_REDIRECT_URL='/'
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('blog.urls')),
     url('^', include('django.contrib.auth.urls')),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-
+    url('', include('social_django.urls', namespace='social')),
 ]

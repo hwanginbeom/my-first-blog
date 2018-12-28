@@ -103,7 +103,7 @@ else: # JSON env
 
 
 ## 소셜 관련 환경설정-------------------------------------------------------------------------
-TEMPLATE_CONTEXT_PROCESSORS = (
+TEMPLATE_CONTEXT_PROCESSORS = [
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
@@ -113,29 +113,27 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
-)
+]
 #Social Login은 기존 유저모델과 함께 사용이 가능합니다.
 # 하지만 기본 유저 ModelBackend를 사용하지 않고 독자적인 ModelBackend를 사용하기 때문에
 # settings.py의 AUTHENTICATION_BACKENDS에 Social login용 Backends를 추가해줘야 합니다.
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'social.backends.facebook.FacebookOAuth2',
     'social.backends.google.GoogleOAuth2',
     # 'social.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
-)
+]
 
 
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 # Facebook
 #SOCIAL_AUTH_FACEBOOK_KEY = '페북에서 받아온 키를 넣으세요'
 #SOCIAL_AUTH_FACEBOOK_SECRET = '페북에서 받아온 시크릿키를 넣으세요'
 
 ## 키 값으로 하는 방식
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '241112517705-kgamsialdgvepvn2ag0ffigu3c2ouhbp.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'jn6y6fbshke-fNQjXzQeZ4UD'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_KEY
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_SECRET
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
 
 # Twitter
@@ -221,4 +219,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-LOGIN_REDIRECT_URL = "/"
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+LOGIN_REDIRECT_URL = '/'

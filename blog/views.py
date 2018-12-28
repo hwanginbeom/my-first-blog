@@ -4,9 +4,15 @@ from django.utils import timezone
 from .models import Post
 from django.shortcuts import render, get_object_or_404 ,redirect
 from .forms import PostForm
-from .forms import LoginForm
-from django.contrib.auth.models import User
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .forms import UserForm, LoginForm
 from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from .forms import UserForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login
 
 
 def signin(request):
@@ -19,10 +25,14 @@ def signin(request):
             login(request, user)
             return redirect('post_list') # 로그인이 되면 post로 넘어가게 끔
         else:
-            return redirect('login')
+            return redirect('post_list')
     else:
         form = LoginForm()
         return render(request, 'blog/login.html', {'form': form})
+
+def logout(request):
+    logout(request)
+    return redirect('post:post_list')
 
 
 def post_new(request):
@@ -39,16 +49,20 @@ def post_new(request):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
+
+
 def join(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)## 회원가입 하는 부분
-            login(request, new_user)
-            return redirect('post_list') # 리다이렉트 - post_list로 보낸다
+            new_user = User.objects.create_user(**form.cleaned_data) # new_user라는 것을 만드는데  form에 있는 데이터에  creat_user를 이용하여 넣어 만든다.
+            login(request, new_user) # 만든 아이디로 로그인을 해준다.
+            return redirect('post_list')
     else:
         form = UserForm()
-        return render(request, 'blog/adduser.html', {'form': form}) # POST가 없으면 adduser를 랜더링 해서 만든다 .
+    return render(request, 'blog/adduser.html', {'form': form}) # 폼 형태를 가지고 adduser.html로 던져준다.
+
+
 
 
 def post_list(request):
@@ -82,3 +96,4 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+

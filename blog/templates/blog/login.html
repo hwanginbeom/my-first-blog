@@ -5,9 +5,12 @@
 <form method="POST" action="">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="로그인" />
-    <input type="hidden" name="next" value="{{ next }}" />
-    <a href="ec2-13-209-40-24.ap-northeast-2.compute.amazonaws.com">구글 API를 사용할 수 있도록 허용하러 가기</a>
-</form>
+    <input class="btn btn-danger" style="width: 40%" type="submit" value="로그인" />
 
+    <input type="hidden" name="next" value="{{ next }}" />
+</form>
+<a href="http://127.0.0.1:8000/join"><button class="btn btn-danger" style="width: 40%">회원가입</button></a>
+<br><br>
+
+<a href="{% url "social:begin" "google-oauth2" %}"><button class="btn btn-danger" style="width: 40%">G+ Login</button></a>
 {% endblock %}
