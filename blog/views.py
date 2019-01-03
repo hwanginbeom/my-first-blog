@@ -8,11 +8,11 @@ from .forms import PostForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import UserForm, LoginForm
-from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from .forms import UserForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib.auth import login,logout,authenticate
+
+
 
 
 def signin(request):
@@ -21,6 +21,7 @@ def signin(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username = username, password = password)
+        data = {'username': request.user.username}
         if user is not None:
             login(request, user)
             return redirect('post_list') # 로그인이 되면 post로 넘어가게 끔
@@ -30,9 +31,14 @@ def signin(request):
         form = LoginForm()
         return render(request, 'blog/login.html', {'form': form})
 
-def logout(request):
+
+
+def loggedout(request):
     logout(request)
-    return redirect('post:post_list')
+    return redirect('login')
+
+# 여기서 재귀함수가 걸린이유는 logout이라는 함수와 이름이 같아 내가
+# 생각한 기능으로 가지 않고 계속 해서 자기 자신을 부르는 무한루프에 빠져서 이다.
 
 
 def post_new(request):
@@ -54,7 +60,7 @@ def post_new(request):
 def join(request):
     if request.method == "POST":
         form = UserForm(request.POST)
-        if form.is_valid():
+        if form.is_valid(): # 폼에 내용이 없으면
             new_user = User.objects.create_user(**form.cleaned_data) # new_user라는 것을 만드는데  form에 있는 데이터에  creat_user를 이용하여 넣어 만든다.
             login(request, new_user) # 만든 아이디로 로그인을 해준다.
             return redirect('post_list')

@@ -1,5 +1,8 @@
 {% extends 'blog/base.html' %}
 
+      <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="241112517705-glc4hivva3mdmsen31dkc44sv758dpsb.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 {% block content %}
 <h2>로그인</h2>
 <form method="POST" action="">
@@ -12,5 +15,28 @@
 <a href="http://127.0.0.1:8000/join"><button class="btn btn-danger" style="width: 40%">회원가입</button></a>
 <br><br>
 
+<!--구글 + api 사용 -->
 <a href="{% url "social:begin" "google-oauth2" %}"><button class="btn btn-danger" style="width: 40%">G+ Login</button></a>
+
+
+<!--그냥 구글 login api 사용-->
+<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      }
+    </script>
+
+
 {% endblock %}

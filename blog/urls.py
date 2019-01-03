@@ -1,7 +1,5 @@
 from django.conf.urls import url, include  # url뿐 아니라 include를 import해야 합니다.
-from django.contrib import admin
 from django.conf import settings
-from django.contrib import admin
 from . import views
 
 urlpatterns = [
@@ -11,7 +9,8 @@ urlpatterns = [
     url(r'^post/(?P<pk>\d+)/edit/$', views.post_edit, name='post_edit'),
     url(r'^join/$', views.join, name='signup'), ## views에서 join 부분으로 간다. signup은 정해져 있는 명령어 같은 느낌
     url(r'^$', views.signin, name='login'),
-    url(r'^logout/$', views.logout, name='logout'),
+    url(r'^login/$', views.signin, name='login'),
+    url(r'^logout/$', views.loggedout, name='logout'),
 
 ##^은 "시작"을 뜻합니다.
 ##post/란 URL이 post 문자를 포함해야 한다는 것

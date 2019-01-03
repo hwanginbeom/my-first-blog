@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
 import json
+import logging
+import os
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'request_logging.middleware.LoggingMiddleware',
 ]
 
 MIDDLEWARE_CLASSES = (
@@ -163,6 +165,11 @@ TEMPLATES = [
     },
 ]
 
+
+
+
+
+
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
@@ -198,10 +205,56 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+logger = logging.getLogger(__name__)
+logger.debug("debug log test")
+
+#
+# LOG_FILE = os.path.join(os.path.dirname(__file__), '..', '2019-01-02.log')
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+#             'datefmt' : "%d/%b/%Y %H:%M:%S" },
+#         'simple': { 'format': '%(levelname)s %(message)s' },
+#     }, 'handlers': {
+#         'file':
+#             { 'level': 'DEBUG',
+#               'class': 'logging.handlers.RotatingFileHandler', # 어떤 핸들러를 쓸지 정하기 여기서는 RotatingFileHandler를 써서 용량이나 파일을 분할해서 만든다
+#               'filename': LOG_FILE,
+#               'formatter': 'verbose',
+#               'maxBytes':1024*10, # 용량 넘치면 새로 파일 만든다.
+#               'backupCount':5, #백업파일 5개
+#               },
+#     },
+#     'loggers':
+#         { 'django':
+#               { 'handlers':['file'],
+#                 'propagate': True,
+#                 'level':'INFO',
+#                 },
+#           'django.request':
+#               { 'handlers':['file'],
+#                 'propagate': False,
+#                 'level':'INFO', }
+#             , 'myAppName':
+#               { 'handlers': ['file'],
+#                 'level': 'DEBUG', }
+#             , }
+# }
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
+#
+# logger = logging.getLogger("Rotating Log")
+# logger.setLevel(logging.INFO)
+#
+# # 로그 파일의 크기가 20 Bytes를 넘으면 새로운 파일에 작성함. 백업 파일은 5개까지 유지함.원 파일+백업 파일 5개
+# handler = RotatingFileHandler(path, maxBytes=20,
+#                               backupCount=5)
+# logger.addHandler(handler)
+#
+
 
 LANGUAGE_CODE = 'ko'
 
@@ -220,4 +273,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/post/list'

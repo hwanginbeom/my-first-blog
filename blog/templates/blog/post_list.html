@@ -3,6 +3,15 @@
 {% block content %}
 
     {% for post in posts %}
+ <ul>
+    {% for key,value in data.items %}
+        {{ key }} : {{ value }}<br>
+     <p><a href="{%url 'logout'%}">bbbbbb</a></p>
+
+    {% endfor %}
+</ul>
+
+
         <div class="post">
             <div class="date">
                 {{ post.published_date }}
@@ -11,7 +20,8 @@
             <p>{{ post.text|linebreaksbr }}</p>
         </div>
     {% endfor %}
-<a href="{% url "social:begin" "google-oauth2" %}"><button class="btn btn-danger" style="width: 40%">G+ Login</button></a>
-<li><a href="{% url 'logout' %}">Logout</a></li>
-<p><a href="{%url 'login'%}">다시 로그인하기</a></p>
+
+<a href="{% url 'logout' %}"><button class="btn btn-danger" style="width: 40%">Logout</button></a>
+
+
 {% endblock %}
