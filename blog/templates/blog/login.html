@@ -18,9 +18,10 @@
 <!--구글 + api 사용 -->
 <a href="{% url "social:begin" "google-oauth2" %}"><button class="btn btn-danger" style="width: 40%">G+ Login</button></a>
 
+<br><br>
 
 <!--그냥 구글 login api 사용-->
-<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style="width: 300%"></div>
     <script>
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
